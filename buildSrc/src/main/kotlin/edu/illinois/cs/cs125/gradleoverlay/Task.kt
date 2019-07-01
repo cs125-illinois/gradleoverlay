@@ -36,17 +36,13 @@ open class OverlayTask : DefaultTask() {
         scanner.setBasedir(studentRoot.absolutePath)
         scanner.scan()
 
-        val copyList = scanner.getIncludedFiles()+ scanner.getIncludedDirectories()
+        val copyList = scanner.getIncludedFiles()
 
         copyList.forEach {
             val copyOrigin = File(studentRoot.absolutePath + '/' + it)
             val copyDestination = File(testRoot.absolutePath + '/' + it)
 
-            if (copyOrigin.isDirectory) {
-                copyOrigin.copyRecursively(copyDestination, true)
-            } else {
-                copyOrigin.copyTo(copyDestination, true)
-            }
+            copyOrigin.copyTo(copyDestination, true)
         }
     }
 
@@ -57,15 +53,11 @@ open class OverlayTask : DefaultTask() {
         scanner.setBasedir(testRoot.absolutePath)
         scanner.scan()
 
-        val deleteList = scanner.getIncludedFiles()+ scanner.getIncludedDirectories()
+        val deleteList = scanner.getIncludedFiles()
 
         deleteList.forEach {
             val toDelete = File(testRoot.absolutePath + '/' + it)
-            if (toDelete.isDirectory) {
-                toDelete.deleteRecursively()
-            } else {
-                toDelete.delete()
-            }
+            toDelete.delete()
         }
     }
 }
