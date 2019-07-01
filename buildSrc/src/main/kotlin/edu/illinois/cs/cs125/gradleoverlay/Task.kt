@@ -19,7 +19,8 @@ open class OverlayTask : DefaultTask() {
         } else {
             project.rootProject.childProjects["student"]!!.projectDir
         }
-        println("Overlaying from $studentRoot")
+        val currentRoot = project.projectDir
+        println("Overlaying from $studentRoot to $currentRoot")
         // TODO
     }
 
