@@ -1,4 +1,10 @@
-# Use ** to indicate recursive copy or delete.
+# Use * as a wildcard to match patterns.
+# For example: /example/*.class will detect all files that ends with .class
+#
+# Use ** to indicate arbitrary directories.
+# For example: /example/**/java.class will detect both /example/dir1/java.class and /example/dir2/java.class
+
+
 
 # A list of students' files that will be copied to test prior to grading.
 copy:
