@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.apache.tools.ant.DirectoryScanner
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.io.File
-import java.io.FileNotFoundException
+import java.nio.file.FileSystems
+import java.nio.file.Paths
 
 open class OverlayTask : DefaultTask() {
 
@@ -29,44 +31,40 @@ open class OverlayTask : DefaultTask() {
 
 
     fun copyFiles(paths: List<String>, studentRoot: File, testRoot: File) {
-        paths.forEach {
-            try {
-                val studentPath = File(studentRoot.path + '/' + it)
-                val testPath = File(testRoot.path + '/' + it)
+        val scanner = DirectoryScanner()
+        scanner.setIncludes(paths.toTypedArray())
+        scanner.setBasedir(studentRoot.absolutePath)
+        scanner.scan()
 
-                if (it.contains("/**")) {
-                    val copyDir = it.removeSuffix("/**")
+        val copyList = scanner.getIncludedFiles()+ scanner.getIncludedDirectories()
 
-                    val studentDir = File(studentRoot.path + '/' + copyDir)
-                    val testDir = File(testRoot.path + '/' + copyDir)
+        copyList.forEach {
+            val copyOrigin = File(studentRoot.absolutePath + '/' + it)
+            val copyDestination = File(testRoot.absolutePath + '/' + it)
 
-                    studentDir.copyRecursively(testDir, true)
-                } else {
-                    studentPath.copyTo(testPath, true)
-                }
-
-            } catch (e: NoSuchFileException) {
-                println(e)
+            if (copyOrigin.isDirectory) {
+                copyOrigin.copyRecursively(copyDestination, true)
+            } else {
+                copyOrigin.copyTo(copyDestination, true)
             }
         }
     }
 
 
     fun deleteFiles(paths: List<String>, testRoot: File) {
-        paths.forEach {
-            try {
-                val testPath = File(testRoot.path + '/' + it)
+        val scanner = DirectoryScanner()
+        scanner.setIncludes(paths.toTypedArray())
+        scanner.setBasedir(testRoot.absolutePath)
+        scanner.scan()
 
-                if (it.contains("/**")) {
-                    val deleteDir = it.removeSuffix("/**")
-                    val testDir = File(testRoot.path + '/' + deleteDir)
+        val deleteList = scanner.getIncludedFiles()+ scanner.getIncludedDirectories()
 
-                    testDir.deleteRecursively()
-                } else {
-                    testPath.delete()
-                }
-            } catch (e: NoSuchFileException) {
-                println(e)
+        deleteList.forEach {
+            val toDelete = File(testRoot.absolutePath + '/' + it)
+            if (toDelete.isDirectory) {
+                toDelete.deleteRecursively()
+            } else {
+                toDelete.delete()
             }
         }
     }
