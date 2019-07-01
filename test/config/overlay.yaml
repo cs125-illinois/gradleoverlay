@@ -3,6 +3,10 @@
 #
 # Use ** to indicate arbitrary directories.
 # For example: /example/**/java.class will detect both /example/dir1/java.class and /example/dir2/java.class
+#
+# * and ** can be used together.
+# For example: /example/**/*.class will detect all files that ends with class that are inside the example directory.
+# Another example: /example/**/* will detect all files inside example directory
 
 
 

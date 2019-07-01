@@ -8,8 +8,6 @@ import org.apache.tools.ant.DirectoryScanner
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.io.File
-import java.nio.file.FileSystems
-import java.nio.file.Paths
 
 open class OverlayTask : DefaultTask() {
 
@@ -30,6 +28,7 @@ open class OverlayTask : DefaultTask() {
     }
 
 
+
     fun copyFiles(paths: List<String>, studentRoot: File, testRoot: File) {
         val scanner = DirectoryScanner()
         scanner.setIncludes(paths.toTypedArray())
@@ -46,6 +45,7 @@ open class OverlayTask : DefaultTask() {
         }
     }
 
+    
 
     fun deleteFiles(paths: List<String>, testRoot: File) {
         val scanner = DirectoryScanner()
