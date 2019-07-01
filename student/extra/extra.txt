@@ -1,0 +1,2 @@
+This extra file was added by the student.
+It should not appear in the overlay.
