@@ -1,1 +1,9 @@
-todo: "Put overlay configuration here"
+# Use ** to indicate recursive copy or delete.
+
+# A list of students' files that will be copied to test prior to grading.
+copy:
+  - src/main/java/edu/illinois/cs/cs125/example/Accumulator.java
+
+# A list of test's files that will be deleted prior to grading.
+delete:
+  - src/main/java/edu/illinois/cs/cs125/example/ImplementationDetail.java

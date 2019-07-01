@@ -19,9 +19,45 @@ open class OverlayTask : DefaultTask() {
         } else {
             project.rootProject.childProjects["student"]!!.projectDir
         }
-        val currentRoot = project.projectDir
-        println("Overlaying from $studentRoot to $currentRoot")
-        // TODO
+        val testRoot = project.projectDir
+        println("Overlaying from $studentRoot to $testRoot")
+
+        copyFiles(config.copy, studentRoot, testRoot)
+        deleteFiles(config.delete, testRoot)
     }
 
+
+    fun copyFiles(paths: List<String>, studentRoot: File, testRoot: File) {
+        paths.forEach {
+            val studentPath = File(studentRoot.path + '/' + it)
+            val testPath = File(testRoot.path + '/' + it)
+
+            if (it.contains("/**")) {
+                val copyDir = it.removeSuffix("/**")
+
+                val studentDir = File(studentRoot.path + '/' + copyDir)
+                val testDir = File(testRoot.path + '/' + copyDir)
+
+                studentDir.copyRecursively(testDir, true)
+            } else {
+                studentPath.copyTo(testPath, true)
+            }
+        }
+    }
+
+
+    fun deleteFiles(paths: List<String>, testRoot: File) {
+        paths.forEach {
+            val testPath = File(testRoot.path + '/' + it)
+
+            if (it.contains("/**")) {
+                val deleteDir = it.removeSuffix("/**")
+                val testDir = File(testRoot.path + '/' + deleteDir)
+
+                testDir.deleteRecursively()
+            } else {
+                testPath.delete()
+            }
+        }
+    }
 }
