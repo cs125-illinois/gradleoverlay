@@ -17,14 +17,16 @@ open class OverlayTask : DefaultTask() {
         val config = configLoader.readValue<OverlayConfig>(project.file("config/overlay.yaml"))
         val studentRoot = if (project.hasProperty("overlayfrom")) {
             File(project.property("overlayfrom") as String)
+        } else if (project.rootProject.childProjects.containsKey("student")) {
+            project.rootProject.childProjects["student"]!!.projectDir // For testing
         } else {
-            project.rootProject.childProjects["student"]!!.projectDir
+            error("Specify overlay source with -Poverlayfrom")
         }
-        val testRoot = project.projectDir
-        println("Overlaying from $studentRoot to $testRoot")
+        val targetRoot = project.projectDir
+        println("Overlaying from $studentRoot to $targetRoot")
 
-        copyFiles(config.copy, studentRoot, testRoot)
-        deleteFiles(config.delete, testRoot)
+        copyFiles(config.copy, studentRoot, targetRoot)
+        deleteFiles(config.delete, targetRoot)
     }
 
 
