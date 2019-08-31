@@ -9,11 +9,12 @@
 # Another example: /example/**/* will detect all files inside example directory
 
 
-
-# A list of students' files that will be copied to test prior to grading.
-copy:
-  - src/main/java/edu/illinois/cs/cs125/example/Accumulator.java
-
-# A list of test's files that will be deleted prior to grading.
+# A list of files that will be deleted from the base prior to copying.
 delete:
   - src/main/java/edu/illinois/cs/cs125/example/ImplementationDetail.java
+
+# A list of students' files that will be copied to the base prior to grading.
+overwrite:
+  - src/main/java/edu/illinois/cs/cs125/example/Accumulator.java
+  - src/main/java/edu/illinois/cs/cs125/example/Absent.java
+  - src/main/java/edu/illinois/cs/cs125/example/Present.java

@@ -25,8 +25,8 @@ open class OverlayTask : DefaultTask() {
         val targetRoot = project.projectDir
         println("Overlaying from $studentRoot to $targetRoot")
 
-        copyFiles(config.copy, studentRoot, targetRoot)
-        deleteFiles(config.delete, targetRoot)
+        deleteFiles(config.delete + config.overwrite, targetRoot)
+        copyFiles(config.overwrite + config.merge, studentRoot, targetRoot)
     }
 
 

@@ -1,6 +1,7 @@
 package edu.illinois.cs.cs125.gradleoverlay
 
 data class OverlayConfig(
-    val copy: List<String>,
-    val delete: List<String>
+    val overwrite: List<String>,
+    val merge: List<String> = listOf(),
+    val delete: List<String> = listOf()
 )
