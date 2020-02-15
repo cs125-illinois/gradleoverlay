@@ -16,7 +16,7 @@ open class OverlayTask : DefaultTask() {
         val configLoader = ObjectMapper(YAMLFactory()).also { it.registerModule(KotlinModule()) }
         val config = configLoader.readValue<OverlayConfig>(project.file("config/overlay.yaml"))
         val studentRoot = if (project.hasProperty("overlayfrom")) {
-            File(project.property("overlayfrom") as String)
+            project.rootProject.file(File(project.property("overlayfrom") as String))
         } else if (project.rootProject.childProjects.containsKey("student")) {
             project.rootProject.childProjects["student"]!!.projectDir // For testing
         } else {
@@ -29,37 +29,29 @@ open class OverlayTask : DefaultTask() {
         copyFiles(config.overwrite + config.merge, studentRoot, targetRoot)
     }
 
-
-
-    fun copyFiles(paths: List<String>, studentRoot: File, testRoot: File) {
+    private fun copyFiles(paths: List<String>, studentRoot: File, testRoot: File) {
         val scanner = DirectoryScanner()
         scanner.setIncludes(paths.toTypedArray())
-        scanner.setBasedir(studentRoot.absolutePath)
+        scanner.basedir = studentRoot
         scanner.scan()
 
-        val copyList = scanner.getIncludedFiles()
-
-        copyList.forEach {
-            val copyOrigin = File(studentRoot.absolutePath + '/' + it)
-            val copyDestination = File(testRoot.absolutePath + '/' + it)
+        scanner.includedFiles.forEach {
+            val copyOrigin = File(studentRoot, it)
+            val copyDestination = File(testRoot, it)
 
             copyOrigin.copyTo(copyDestination, true)
         }
     }
 
-    
-
-    fun deleteFiles(paths: List<String>, testRoot: File) {
+    private fun deleteFiles(paths: List<String>, testRoot: File) {
         val scanner = DirectoryScanner()
         scanner.setIncludes(paths.toTypedArray())
-        scanner.setBasedir(testRoot.absolutePath)
+        scanner.basedir = testRoot
         scanner.scan()
 
-        val deleteList = scanner.getIncludedFiles()
-
-        deleteList.forEach {
-            val toDelete = File(testRoot.absolutePath + '/' + it)
-            toDelete.delete()
+        scanner.includedFiles.forEach {
+            File(testRoot, it).delete()
         }
     }
+
 }

@@ -4,4 +4,4 @@
 build/
 gen/
 out/
-local.properties
+buildSrc/local.properties
