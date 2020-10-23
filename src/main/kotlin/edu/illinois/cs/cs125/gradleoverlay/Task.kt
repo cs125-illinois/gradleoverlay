@@ -9,12 +9,12 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-open class OverlayTask : DefaultTask() {
+open class Task : DefaultTask() {
 
     @TaskAction
     fun run() {
         val configLoader = ObjectMapper(YAMLFactory()).also { it.registerModule(KotlinModule()) }
-        val config = configLoader.readValue<OverlayConfig>(project.file("config/overlay.yaml"))
+        val config = configLoader.readValue<Config>(project.file("config/overlay.yaml"))
         val studentRoot = if (project.hasProperty("overlayfrom")) {
             project.rootProject.file(File(project.property("overlayfrom") as String))
         } else if (project.rootProject.childProjects.containsKey("student")) {
@@ -53,5 +53,4 @@ open class OverlayTask : DefaultTask() {
             File(testRoot, it).delete()
         }
     }
-
 }
