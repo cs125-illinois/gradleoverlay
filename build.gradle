@@ -1,6 +1,0 @@
-group 'com.github.cs125-illinois'
-version '1.0'
-
-repositories {
-    mavenCentral()
-}

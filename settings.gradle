@@ -1,5 +1,0 @@
-rootProject.name = 'gradleoverlay'
-include ':buildSrc'
-include 'test'
-include 'student'
-
