@@ -24,7 +24,7 @@ gradlePlugin {
     plugins {
         create("plugin") {
             id = "com.github.cs125-illinois.gradleoverlay"
-            implementationClass = "edu.illinois.cs.cs125.gradleoverlay.OverlayPlugin"
+            implementationClass = "edu.illinois.cs.cs125.gradleoverlay.Plugin"
         }
     }
 }
