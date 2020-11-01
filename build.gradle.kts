@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.github.cs125-illinois"
-version = "2020.11.0"
+version = "2020.11.1"
 
 repositories {
     mavenCentral()
