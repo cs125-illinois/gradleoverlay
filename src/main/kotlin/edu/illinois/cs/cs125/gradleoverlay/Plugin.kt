@@ -40,21 +40,21 @@ open class Task : DefaultTask() {
         val mapper = ObjectMapper(YAMLFactory()).also { it.registerModule(KotlinModule()) }
 
         val config = mapper.readValue<Overlay>(project.file("config/overlay.yaml"))
+
+        require(project.hasProperty("overlayfrom")) {
+            "Specify overlay source with -Poverlayfrom"
+        }
+        val studentRoot = project.rootProject.file(File(project.property("overlayfrom") as String))
+        val targetRoot = project.projectDir
+        println("Overlaying from $studentRoot to $targetRoot")
+
         val overlayConfig = if (config.checkpoints.keys.isNotEmpty()) {
-            mapper.readValue<CheckpointConfig>(project.file("grade.yaml")).checkpoint.let {
+            mapper.readValue<CheckpointConfig>(File(studentRoot, "grade.yaml")).checkpoint.let {
                 config.checkpoints[it.toString()]
             }
         } else {
             null
         }
-
-        require(project.hasProperty("overlayfrom")) {
-            "Specify overlay source with -Poverlayfrom"
-        }
-
-        val studentRoot = project.rootProject.file(File(project.property("overlayfrom") as String))
-        val targetRoot = project.projectDir
-        println("Overlaying from $studentRoot to $targetRoot")
 
         (config.delete + config.overwrite).rm(targetRoot)
         if (overlayConfig != null) {
