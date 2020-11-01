@@ -19,15 +19,15 @@ class Plugin : Plugin<Project> {
 }
 
 data class Overlay(
-        val overwrite: List<String>,
-        val merge: List<String> = listOf(),
-        val delete: List<String> = listOf(),
-        val checkpoints: Map<String, Checkpoint> = mapOf()
+    val overwrite: List<String>,
+    val merge: List<String> = listOf(),
+    val delete: List<String> = listOf(),
+    val checkpoints: Map<String, Checkpoint> = mapOf()
 ) {
     data class Checkpoint(
-            val overwrite: List<String> = listOf(),
-            val merge: List<String> = listOf(),
-            val delete: List<String> = listOf()
+        val overwrite: List<String> = listOf(),
+        val merge: List<String> = listOf(),
+        val delete: List<String> = listOf()
     )
 }
 
@@ -55,7 +55,7 @@ open class Task : DefaultTask() {
         val studentRoot = project.rootProject.file(File(project.property("overlayfrom") as String))
         val targetRoot = project.projectDir
         println("Overlaying from $studentRoot to $targetRoot")
-        
+
         (config.delete + config.overwrite).rm(targetRoot)
         if (overlayConfig != null) {
             (overlayConfig.delete + overlayConfig.overwrite).rm(targetRoot)
