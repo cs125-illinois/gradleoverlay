@@ -1,13 +1,14 @@
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.30"
     `java-gradle-plugin`
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "6.1.0"
-    id("org.jmailen.kotlinter") version "3.2.0"
+    id("org.jmailen.kotlinter") version "3.3.0"
+    id("com.github.ben-manes.versions") version "0.36.0"
 }
 
 group = "com.github.cs125-illinois"
-version = "2020.11.2"
+version = "2021.2.0"
 
 repositories {
     mavenCentral()
@@ -15,6 +16,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     implementation(gradleApi())
     implementation("com.fasterxml.jackson.core:jackson-databind:2.11.3")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.3")
